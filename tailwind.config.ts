@@ -52,6 +52,21 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Nature theme colors
+				'mangrove': {
+					DEFAULT: 'hsl(var(--primary))',
+					dark: 'hsl(var(--mangrove-dark))',
+					light: 'hsl(var(--mangrove-light))'
+				},
+				'ocean': {
+					DEFAULT: 'hsl(var(--secondary))',
+					deep: 'hsl(var(--ocean-deep))',
+					light: 'hsl(var(--ocean-light))'
+				},
+				'coral': 'hsl(var(--coral))',
+				'earth': 'hsl(var(--earth))',
+				'success': 'hsl(var(--success))',
+				'warning': 'hsl(var(--warning))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -67,6 +82,20 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			backgroundImage: {
+				'gradient-ocean': 'var(--gradient-ocean)',
+				'gradient-mangrove': 'var(--gradient-mangrove)',
+				'gradient-hero': 'var(--gradient-hero)',
+				'gradient-card': 'var(--gradient-card)'
+			},
+			boxShadow: {
+				'nature': 'var(--shadow-nature)',
+				'floating': 'var(--shadow-floating)'
+			},
+			transitionTimingFunction: {
+				'nature': 'var(--transition-nature)',
+				'slow': 'var(--transition-slow)'
 			},
 			keyframes: {
 				'accordion-down': {
