@@ -3,10 +3,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BarChart3, MapPin, Eye, Clock, CheckCircle, AlertTriangle, XCircle } from "lucide-react";
+import { BarChart3, MapPin, Eye, Clock, CheckCircle, AlertTriangle, XCircle, User, Calendar, Award } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const Dashboard = () => {
   const [selectedReport, setSelectedReport] = useState<number | null>(null);
+  const { user } = useAuth();
 
   // Mock data for reports
   const reports = [
@@ -17,7 +19,7 @@ const Dashboard = () => {
       severity: "severe",
       status: "pending",
       location: { lat: 25.7617, lng: -80.1918, name: "Biscayne Bay, FL" },
-      submittedBy: "EcoWatcher23",
+      submittedBy: user?.fullname || "EcoWatcher23",
       timestamp: "2024-01-20T10:30:00Z",
       photo: true
     },
@@ -39,11 +41,19 @@ const Dashboard = () => {
       severity: "minor",
       status: "resolved",
       location: { lat: 25.7417, lng: -80.1718, name: "Stiltsville, FL" },
-      submittedBy: "OceanProtector",
+      submittedBy: user?.fullname || "OceanProtector",
       timestamp: "2024-01-18T09:45:00Z",
       photo: false
     }
   ];
+
+  // User stats
+  const userStats = {
+    totalReports: reports.filter(r => r.submittedBy === user?.fullname).length || 3,
+    resolvedIssues: reports.filter(r => r.submittedBy === user?.fullname && r.status === 'resolved').length || 1,
+    impactScore: 94,
+    joinDate: "January 2024"
+  };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -81,20 +91,49 @@ const Dashboard = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-4 bg-gradient-mangrove bg-clip-text text-transparent">
-            Authority Dashboard
+            Welcome back, {user?.fullname || 'Protector'}!
           </h1>
           <p className="text-xl text-muted-foreground">
-            Monitor and manage mangrove protection reports
+            Your environmental protection dashboard
           </p>
         </div>
 
-        {/* Stats Overview */}
+        {/* User Profile Section */}
+        <div className="mb-8">
+          <Card className="shadow-nature bg-gradient-mangrove text-white">
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                    <User className="h-8 w-8 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold">{user?.fullname || 'Environmental Protector'}</h2>
+                    <p className="text-white/80">{user?.email}</p>
+                    <div className="flex items-center mt-2 space-x-4 text-sm">
+                      <div className="flex items-center">
+                        <Calendar className="h-4 w-4 mr-1" />
+                        Member since {userStats.joinDate}
+                      </div>
+                      <div className="flex items-center">
+                        <Award className="h-4 w-4 mr-1" />
+                        Impact Score: {userStats.impactScore}%
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* User Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           {[
-            { label: "Total Reports", value: "1,247", icon: BarChart3, color: "text-primary" },
-            { label: "Pending Review", value: "23", icon: Clock, color: "text-warning" },
-            { label: "Under Investigation", value: "8", icon: Eye, color: "text-ocean" },
-            { label: "Resolved", value: "1,216", icon: CheckCircle, color: "text-success" }
+            { label: "Your Reports", value: userStats.totalReports.toString(), icon: BarChart3, color: "text-primary" },
+            { label: "Pending Review", value: "2", icon: Clock, color: "text-warning" },
+            { label: "Under Investigation", value: "1", icon: Eye, color: "text-ocean" },
+            { label: "Resolved Issues", value: userStats.resolvedIssues.toString(), icon: CheckCircle, color: "text-success" }
           ].map((stat, index) => {
             const Icon = stat.icon;
             return (
